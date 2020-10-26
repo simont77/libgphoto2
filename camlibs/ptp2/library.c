@@ -6439,7 +6439,7 @@ camera_wait_for_event (Camera *camera, int timeout,
 	}
 
 	if (	(params->deviceinfo.VendorExtensionID == PTP_VENDOR_NIKON) &&
-		ptp_operation_issupported(params, PTP_OC_NIKON_GetEvent)
+		ptp_operation_issupported(params, PTP_OC_NIKON_GetEvent) && strcmp(params->deviceinfo.Model,"V1")
 	) {
 		do {
 			C_PTP_REP (ptp_check_event (params));
