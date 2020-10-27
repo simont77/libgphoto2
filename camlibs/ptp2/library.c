@@ -3934,7 +3934,7 @@ camera_nikon_capture (Camera *camera, CameraCaptureType type, CameraFilePath *pa
 			ret = ptp_nikon_capture_sdram(params);
 		} while ((ret == PTP_RC_DeviceBusy) && (loops--));
 	} else {
-		if (strcmp(params->deviceinfo.Model,"V1")
+		if (strcmp(params->deviceinfo.Model,"V1"))
 		{
 			loops = 100;
 			do {
