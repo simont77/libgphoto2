@@ -2967,7 +2967,7 @@ ptp_check_event (PTPParams *params)
 	 * The Nikon Coolpix P2 however does not return anything. So if we never get
 	 * events from here, use the ptp "interrupt" method */
 	if (	(params->deviceinfo.VendorExtensionID == PTP_VENDOR_NIKON) &&
-		ptp_operation_issupported(params, PTP_OC_NIKON_GetEvent) && strcmp(params->deviceinfo.Model,"V1")
+		ptp_operation_issupported(params, PTP_OC_NIKON_GetEvent) 
 	) {
 		unsigned int evtcnt = 0, i;
 		PTPContainer *xevent = NULL;

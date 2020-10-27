@@ -3934,10 +3934,13 @@ camera_nikon_capture (Camera *camera, CameraCaptureType type, CameraFilePath *pa
 			ret = ptp_nikon_capture_sdram(params);
 		} while ((ret == PTP_RC_DeviceBusy) && (loops--));
 	} else {
-		loops = 100;
-		do {
-			ret = ptp_nikon_capture(params, 0xffffffff);
-		} while ((ret == PTP_RC_DeviceBusy) && (loops--));
+		if (strcmp(params->deviceinfo.Model,"V1")
+		{
+			loops = 100;
+			do {
+				ret = ptp_nikon_capture(params, 0xffffffff);
+			} while ((ret == PTP_RC_DeviceBusy) && (loops--));
+		}
 	}
 
 capturetriggered:
@@ -6439,7 +6442,7 @@ camera_wait_for_event (Camera *camera, int timeout,
 	}
 
 	if (	(params->deviceinfo.VendorExtensionID == PTP_VENDOR_NIKON) &&
-		ptp_operation_issupported(params, PTP_OC_NIKON_GetEvent) && strcmp(params->deviceinfo.Model,"V1")
+		ptp_operation_issupported(params, PTP_OC_NIKON_GetEvent)
 	) {
 		do {
 			C_PTP_REP (ptp_check_event (params));
