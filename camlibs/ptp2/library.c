@@ -3933,14 +3933,12 @@ camera_nikon_capture (Camera *camera, CameraCaptureType type, CameraFilePath *pa
 		do {
 			ret = ptp_nikon_capture_sdram(params);
 		} while ((ret == PTP_RC_DeviceBusy) && (loops--));
-	} else {
-		if (strcmp(params->deviceinfo.Model,"V1"))
-		{
-			loops = 100;
-			do {
-				ret = ptp_nikon_capture(params, 0xffffffff);
-			} while ((ret == PTP_RC_DeviceBusy) && (loops--));
-		}
+	} else {	
+		loops = 100;
+		do {
+			ret = ptp_nikon_capture(params, 0xffffffff);
+		} while ((ret == PTP_RC_DeviceBusy) && (loops--));
+
 	}
 
 capturetriggered:
@@ -5356,7 +5354,7 @@ camera_capture (Camera *camera, CameraCaptureType type, CameraFilePath *path,
 	}
 
 	/* 1st gen, 2nd gen nikon capture only go to SDRAM */
-	if (	(params->deviceinfo.VendorExtensionID == PTP_VENDOR_NIKON) &&
+	if (	(params->deviceinfo.VendorExtensionID == PTP_VENDOR_NIKON) && strcmp(params->deviceinfo.Model,"V1") &&
 		(ptp_operation_issupported(params, PTP_OC_NIKON_InitiateCaptureRecInSdram) ||
 		 ptp_operation_issupported(params, PTP_OC_NIKON_AfCaptureSDRAM)
 	)) {
