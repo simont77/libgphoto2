@@ -5583,7 +5583,7 @@ fallback:
 	/* The Nikon 1 series emits ObjectAdded occasionally after
 	 * the CaptureComplete event, while others do it the other way
 	 * round. Handle that case with some bitmask. */
-	done = 0; tries = 20;
+	done = 0; tries = 60;
 	while (done != 3) {
 		uint16_t ret;
 
