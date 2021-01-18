@@ -5583,6 +5583,7 @@ fallback:
 	/* The Nikon 1 series emits ObjectAdded occasionally after
 	 * the CaptureComplete event, while others do it the other way
 	 * round. Handle that case with some bitmask. */
+	CR (gp_port_set_timeout (camera->port, capture_timeout));
 	done = 0; tries = 60;
 	while (done != 3) {
 		uint16_t ret;
@@ -5635,6 +5636,7 @@ fallback:
 			break;
 		}
 	}
+	CR (gp_port_set_timeout (camera->port, normal_timeout));
 out:
 	/* clear path, so we get defined results even without object info */
 	path->name[0]='\0';
