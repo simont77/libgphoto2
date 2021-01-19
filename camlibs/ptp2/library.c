@@ -5504,8 +5504,21 @@ fallback:
 	 * indicating that the capure has been completed may occur after
 	 * few seconds. moving down the code. (kil3r)
 	 */
+	do { 
+		int cr_r=(gp_port_set_timeout (camera->port, capture_timeout));
+		if (cr_r<0) 
+		{ 
+			GP_LOG_E ("'%s' failed: '%s' (%d)", "gp_port_set_timeout (camera->port, capture_timeout)", gp_port_result_as_string(cr_r), cr_r); return cr_r; 
+		}
+		else
+		{
+			GP_LOG_E ("'%s' OK: '%s' (%d)", "gp_port_set_timeout (camera->port, capture_timeout)", gp_port_result_as_string(cr_r), cr_r);
+		}
+		
+		} while (0);
+
 	C_PTP_REP (ptp_initiatecapture(params, 0x00000000, 0x00000000));
-	CR (gp_port_set_timeout (camera->port, capture_timeout));
+	
 	/* A word of comments is worth here.
 	 * After InitiateCapture camera should report with ObjectAdded event
 	 * all newly created objects. However there might be more than one
@@ -5577,17 +5590,17 @@ fallback:
 		goto out;
 	}
 
-	CR (gp_port_set_timeout (camera->port, normal_timeout));
+	//CR (gp_port_set_timeout (camera->port, normal_timeout));
 
 	/* The standard defined way ... wait for some capture related events. */
 	/* The Nikon 1 series emits ObjectAdded occasionally after
 	 * the CaptureComplete event, while others do it the other way
 	 * round. Handle that case with some bitmask. */
-	CR (gp_port_set_timeout (camera->port, capture_timeout));
+	//CR (gp_port_set_timeout (camera->port, capture_timeout));
 	done = 0; tries = 60;
 	while (done != 3) {
 		uint16_t ret;
-
+		GP_LOG_D ("Doing capture in default mode");
 		C_PTP_REP (ptp_wait_event (params));
 
 		if (!ptp_get_one_event(params, &event)) {
