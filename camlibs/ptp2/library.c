@@ -5517,7 +5517,18 @@ fallback:
 		
 		} while (0);
 
-	C_PTP_REP (ptp_initiatecapture(params, 0x00000000, 0x00000000));
+	//C_PTP_REP (ptp_initiatecapture(params, 0x00000000, 0x00000000));
+
+	do { 
+		uint16_t c_ptp_rep_ret = (ptp_generic_no_data(params,0x100E,2,0x00000000,0x00000000));
+		if (c_ptp_rep_ret != PTP_RC_OK)
+		{ 
+			const char* ptp_err_str = ptp_strerror(c_ptp_rep_ret, params->deviceinfo.VendorExtensionID);
+			GP_LOG_E ("'%s' failed: '%s' (0x%04x)", "ptp_initiatecapture(params, 0x00000000, 0x00000000)", ptp_err_str, c_ptp_rep_ret); 
+			//gp_context_error (context, "%s", dgettext(GETTEXT_PACKAGE, ptp_err_str)); 
+			//return translate_ptp_result (c_ptp_rep_ret); 
+		}
+	} while(0);
 	
 	/* A word of comments is worth here.
 	 * After InitiateCapture camera should report with ObjectAdded event
